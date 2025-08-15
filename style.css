@@ -19,7 +19,6 @@ body {
     max-width: 800px;
     background-color: rgba(245, 238, 220, 0.9);
     border: 12px solid #8B5A2B;
-    border-image: url('https://i.imgur.com/ZLQXQ7x.png') 12 round;
     padding: 40px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
     position: relative;
