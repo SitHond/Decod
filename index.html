@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архивный декодер</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="ribbon">
+            <div class="ribbon-content">Секретный архив</div>
+        </div>
+        <div class="stamp">ДОПУСК №42</div>
+        <div class="book-stand"></div>
+        
+        <div class="secret-hint" id="secretHint" onclick="startSecretQuest()">42... только для избранных</div>
+        
+        <h1>Архивный декодер</h1>
+        
+        <div class="tabs">
+            <div class="tab" id="encodeTabBtn" onclick="switchTab('encode')">Кодирование</div>
+            <div class="tab active" id="decodeTabBtn" onclick="switchTab('decode')">Декодирование</div>
+        </div>
+        
+        <div id="encodeTab" class="tab-content">
+            <div class="input-group">
+                <label for="textInput">Текст для кодирования:</label>
+                <textarea id="textInput" placeholder="Введите текст для шифрования..."></textarea>
+            </div>
+            <button id="encodeBtn" onclick="encodeToBase64()">Закодировать</button>
+            <label>Результат:</label>
+            <div class="result" id="encodeResult"></div>
+            <button onclick="copyResult('encodeResult')">Копировать</button>
+        </div>
+        
+        <div id="decodeTab" class="tab-content active">
+            <div class="input-group">
+                <label for="base64Input">Код:</label>
+                <textarea id="base64Input" placeholder="Введите зашифрованную строку..."></textarea>
+            </div>
+            <button id="decodeBtn" onclick="startDecoding()">Декодировать</button>
+            <label>Результат:</label>
+            <div class="result" id="decodeResult"></div>
+            <button onclick="copyResult('decodeResult')">Копировать</button>
+        </div>
+    </div>
+    
+    <div class="quest-modal" id="questModal">
+        <h2>Секретный квест архивариуса</h2>
+        <p>Вы обнаружили скрытую подсказку! Введите секретный код для доступа к тайным архивам.</p>
+        <input type="text" class="quest-input" id="questCode" placeholder="Введите секретный код">
+        <div class="hint-text" id="questHint">Подсказка: проверьте консоль разработчика (F12)</div>
+        <button class="quest-btn" onclick="checkQuestCode()">Проверить код</button>
+        <button class="quest-btn" style="background-color: #8B5A2B;" onclick="closeQuestModal()">Отмена</button>
+    </div>
+    
+    <div class="decoding-animation" id="decodingAnimation">
+        <div class="old-paper">
+            <div style="text-align: center; padding-top: 50px;">
+                <div style="font-size: 3rem; color: #8B5A2B;">⌛</div>
+            </div>
+        </div>
+        <div class="decoding-text">Идёт процесс декодирования...</div>
+    </div>
+    
+    <div class="success-message" id="successMessage">
+        <h2>Доступ получен!</h2>
+        <p>Вы успешно декодировали секретное слово. Теперь вам доступна функция кодирования.</p>
+        <button class="success-btn" onclick="closeSuccessMessage()">Продолжить</button>
+    </div>
+    
+    <div class="taunt-message" id="tauntMessage">
+        <h2 id="tauntTitle">Ошибка декодирования</h2>
+        <p id="tauntText">Кажется, у вас проблемы с пониманием Base64...</p>
+        <button class="taunt-btn" onclick="closeTauntMessage()">Я понял...</button>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
