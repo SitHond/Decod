@@ -27,7 +27,7 @@ const tauntTitles = [
 function startSecretQuest() {
     console.log("%cСекретный код: 42", "color: red; font-size: 20px; font-weight: bold;");
     console.log("%cВведите этот код в поле на экране, затем выполните в консоли:", "color: blue; font-size: 16px;");
-    console.log("%cdecodeSecret('ваш_ответ')", "color: green; font-size: 16px; font-family: monospace;");
+    // console.log("%cdecodeSecret('ваш_ответ')", "color: green; font-size: 16px; font-family: monospace;");
     
     document.getElementById('questModal').style.display = 'block';
 }
@@ -55,7 +55,7 @@ function decodeSecret(answer) {
             // Кодируем UTF-8 строку в Base64 правильно
             const utf8Text = "Поздравляем! Вы нашли секрет архивариуса!";
             const encoded = btoa(unescape(encodeURIComponent(utf8Text)));
-            alert(`Ваш секретный ключ: ${encoded}\nВведите его в декодер для получения финального сообщения.`);
+            alert(`Ваш секретный ключ: напиши автору в лс телеги ответ на главный вопрос. В чем смысл жизни?`);
             return encoded;
         } catch (e) {
             console.error("Ошибка кодирования:", e);
