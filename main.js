@@ -51,9 +51,16 @@ function closeQuestModal() {
 // Секретная функция для выполнения в консоли
 function decodeSecret(answer) {
     if (answer === "ответ в коде сайта") {
-        const secretResult = btoa("Поздравляем! Вы нашли секрет архивариуса!");
-        alert(`Ваш секретный ключ: ${secretResult}\nВведите его в декодер для получения финального сообщения.`);
-        return secretResult;
+        try {
+            // Кодируем UTF-8 строку в Base64 правильно
+            const utf8Text = "Поздравляем! Вы нашли секрет архивариуса!";
+            const encoded = btoa(unescape(encodeURIComponent(utf8Text)));
+            alert(`Ваш секретный ключ: ${encoded}\nВведите его в декодер для получения финального сообщения.`);
+            return encoded;
+        } catch (e) {
+            console.error("Ошибка кодирования:", e);
+            return false;
+        }
     } else {
         console.log("Неверный ответ! Попробуйте еще раз.");
         return false;
