@@ -34,10 +34,21 @@ function startSecretQuest() {
 function checkQuestCode() {
     const input = document.getElementById('questCode').value;
     if (input === questPassword) {
-        alert("Правильно! Теперь введите в консоли: unlockEncoding()");
+        alert('Правильно! Теперь откройте консоль и введите: decodeSecret("Черный Клевер")');
         closeQuestModal();
     } else {
         alert("Неверный код! Попробуйте еще раз.");
+    }
+}
+
+// Функция для вызова в консоли
+function decodeSecret(answer) {
+    if (answer === "Черный Клевер") {
+        alert("Поздравляем! Введите в ЛС автора ответ на главный вопрос: В чем смысл жизни?");
+        return true;
+    } else {
+        console.log("Неверный ответ! Попробуйте еще раз.");
+        return false;
     }
 }
 
