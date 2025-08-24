@@ -1,20 +1,20 @@
+// 🔑 Секретный ключ
+const SECRET_KEY = "мой_супер_секретный_ключ_42";
 const secretWord = "Архив";
 const questPassword = "42";
-let isDecoding = false;
 
-// Массив насмешливых сообщений
+// --- Массивы для насмешек ---
 const taunts = [
-    "Гуманитарий? Base64 требует точности!",
+    "Гуманитарий? AES требует точности!",
     "Даже архивный скрипт справился бы лучше!",
-    "Вы уверены, что это Base64? Не похоже...",
+    "Вы уверены, что это зашифрованный текст? Не похоже...",
     "В архивах такие ошибки не прощают!",
-    "Может, оставите декодирование профессионалам?",
+    "Может, оставите дешифровку профессионалам?",
     "Шифр повреждён... или это ваши навыки?",
     "Архивариусы смеются над вашей попыткой!",
-    "Base64 - это не иероглифы, тут есть правила!"
+    "AES — это не иероглифы, тут есть правила!"
 ];
 
-// Массив заголовков для насмешек
 const tauntTitles = [
     "Позор архивариуса!",
     "Ошибка новичка!",
@@ -23,51 +23,29 @@ const tauntTitles = [
     "Фатальная ошибка!"
 ];
 
-// Функция для запуска квеста
+// --- Секретный квест ---
 function startSecretQuest() {
     console.log("%cСекретный код: 42", "color: red; font-size: 20px; font-weight: bold;");
     console.log("%cВведите этот код в поле на экране, затем выполните в консоли:", "color: blue; font-size: 16px;");
-    // console.log("%cdecodeSecret('ваш_ответ')", "color: green; font-size: 16px; font-family: monospace;");
-    
+    console.log("%cunlockEncoding()", "color: green; font-size: 16px; font-family: monospace;");
     document.getElementById('questModal').style.display = 'block';
 }
 
-// Функция проверки кода квеста
 function checkQuestCode() {
     const input = document.getElementById('questCode').value;
     if (input === questPassword) {
-        alert("Правильно! Теперь введите в консоли: decodeSecret('ответ в коде сайта')");
+        alert("Правильно! Теперь введите в консоли: unlockEncoding()");
         closeQuestModal();
     } else {
         alert("Неверный код! Попробуйте еще раз.");
     }
 }
 
-// Функция для закрытия модального окна квеста
 function closeQuestModal() {
     document.getElementById('questModal').style.display = 'none';
 }
 
-// Секретная функция для выполнения в консоли
-function decodeSecret(answer) {
-    if (answer === "ответ в коде сайта") {
-        try {
-            // Кодируем UTF-8 строку в Base64 правильно
-            const utf8Text = "Поздравляем! Вы нашли секрет архивариуса!";
-            const encoded = btoa(unescape(encodeURIComponent(utf8Text)));
-            alert(`Ваш секретный ключ: напиши автору в лс телеги ответ на главный вопрос. В чем смысл жизни?`);
-            return encoded;
-        } catch (e) {
-            console.error("Ошибка кодирования:", e);
-            return false;
-        }
-    } else {
-        console.log("Неверный ответ! Попробуйте еще раз.");
-        return false;
-    }
-}
-
-// Остальные функции
+// --- Насмешки ---
 function showRandomTaunt() {
     const randomTaunt = taunts[Math.floor(Math.random() * taunts.length)];
     const randomTitle = tauntTitles[Math.floor(Math.random() * tauntTitles.length)];
@@ -81,66 +59,46 @@ function closeTauntMessage() {
     document.getElementById('tauntMessage').style.display = 'none';
 }
 
-function startDecoding() {
-    if (isDecoding) return;
-    isDecoding = true;
-    
-    const animation = document.getElementById('decodingAnimation');
-    animation.classList.add('active');
-    
-    setTimeout(() => {
-        decodeFromBase64();
-        animation.classList.remove('active');
-        isDecoding = false;
-    }, 2000);
-}
-
-function encodeToBase64() {
+// 🔐 Шифрование (доступно только через консоль)
+function encodeToAES() {
     const input = document.getElementById('textInput').value;
     const resultElement = document.getElementById('encodeResult');
     
     try {
-        if (!input) {
-            throw new Error('Введите текст для кодирования');
-        }
-        
-        const encodedText = btoa(unescape(encodeURIComponent(input)));
-        resultElement.textContent = encodedText;
-        
+        if (!input) throw new Error('Введите текст для кодирования');
+        const encrypted = CryptoJS.AES.encrypt(input, SECRET_KEY).toString();
+        resultElement.textContent = encrypted;
     } catch (error) {
         resultElement.textContent = 'ОШИБКА: ' + error.message;
     }
 }
 
-function decodeFromBase64() {
+// 🔓 Дешифрование
+function decodeFromAES() {
     const input = document.getElementById('base64Input').value.trim();
     const resultElement = document.getElementById('decodeResult');
     
     try {
-        if (!input) {
-            throw new Error('Введите Base64 строку');
-        }
-        
-        if (!/^[A-Za-z0-9+/=]+$/.test(input)) {
-            showRandomTaunt();
-            throw new Error('Неверный формат Base64');
-        }
-        
-        const decodedText = decodeURIComponent(escape(atob(input)));
+        if (!input) throw new Error('Введите зашифрованную строку');
+        const bytes = CryptoJS.AES.decrypt(input, SECRET_KEY);
+        const decodedText = bytes.toString(CryptoJS.enc.Utf8);
+
+        if (!decodedText) throw new Error("Неверный ключ или повреждённый текст");
+
         resultElement.textContent = decodedText;
-        
+
         if (decodedText === secretWord) {
             document.getElementById('successMessage').style.display = 'block';
         }
-        
     } catch (error) {
         resultElement.textContent = 'ОШИБКА: ' + error.message;
-        if (input && error.message !== 'Введите Base64 строку') {
+        if (input && error.message !== 'Введите зашифрованную строку') {
             setTimeout(showRandomTaunt, 500);
         }
     }
 }
 
+// --- Вспомогательные функции ---
 function closeSuccessMessage() {
     document.getElementById('successMessage').style.display = 'none';
     switchTab('encode');
@@ -173,8 +131,16 @@ function copyResult(elementId) {
         .catch(err => alert('Ошибка: ' + err));
 }
 
-// Инициализация
+// --- Секретная функция активации кодирования ---
+function unlockEncoding() {
+    document.getElementById('encodeTabBtn').style.display = 'block';
+    switchTab('encode');
+    alert("Функция кодирования активирована! Теперь вкладка доступна.");
+}
+
+// --- Инициализация ---
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('encodeTab').style.display = 'none';
+    document.getElementById('encodeTab').classList.remove('active');
     document.getElementById('encodeTabBtn').style.display = 'none';
+    console.log("%cПодсказка: ищи скрытые квесты на сайте... 😉", "color: purple; font-size: 14px;");
 });
