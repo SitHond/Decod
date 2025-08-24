@@ -28,7 +28,7 @@
                 <label for="textInput">Текст для кодирования:</label>
                 <textarea id="textInput" placeholder="Введите текст для шифрования..."></textarea>
             </div>
-            <button id="encodeBtn" onclick="encodeToBase64()">Закодировать</button>
+            <button id="encodeBtn" onclick="encodeToAES()">Закодировать</button>
             <label>Результат:</label>
             <div class="result" id="encodeResult"></div>
             <button onclick="copyResult('encodeResult')">Копировать</button>
@@ -39,7 +39,7 @@
                 <label for="base64Input">Код:</label>
                 <textarea id="base64Input" placeholder="Введите зашифрованную строку..."></textarea>
             </div>
-            <button id="decodeBtn" onclick="startDecoding()">Декодировать</button>
+            <button id="decodeBtn" onclick="decodeFromAES()">Декодировать</button>
             <label>Результат:</label>
             <div class="result" id="decodeResult"></div>
             <button onclick="copyResult('decodeResult')">Копировать</button>
@@ -50,7 +50,6 @@
         <h2>Секретный квест архивариуса</h2>
         <p>Вы обнаружили скрытую подсказку! Введите секретный код для доступа к тайным архивам.</p>
         <input type="text" class="quest-input" id="questCode" placeholder="Введите секретный код">
-        <div class="hint-text" id="questHint">Подсказка: проверьте консоль разработчика (F12)</div>
         <button class="quest-btn" onclick="checkQuestCode()">Проверить код</button>
         <button class="quest-btn" style="background-color: #8B5A2B;" onclick="closeQuestModal()">Отмена</button>
     </div>
@@ -72,10 +71,12 @@
     
     <div class="taunt-message" id="tauntMessage">
         <h2 id="tauntTitle">Ошибка декодирования</h2>
-        <p id="tauntText">Кажется, у вас проблемы с пониманием Base64...</p>
+        <p id="tauntText">Кажется, у вас проблемы с пониманием шифра...</p>
         <button class="taunt-btn" onclick="closeTauntMessage()">Я понял...</button>
     </div>
 
+    <!-- Сначала библиотека, потом main.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
